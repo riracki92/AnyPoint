@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package anypoint;
+
+import "google/protobuf/descriptor.proto";
+
+option java_multiple_files = true;
+option java_package = "com.anypoint";
+option java_outer_classname = "AnypointProto";
+
+service PriceService {
+  rpc GetPrice(PriceRequest) returns (PriceResponse) {}
+}
+
+service ReportService {
+  rpc GetSales(SalesRequest) returns (SalesResponse) {}
+}
+
+message PriceRequest {
+  int32 customer_id = 1;
+  float price = 2;
+  float price_modifier = 3;
+  PaymentMethod payment_method = 4;
+  string datetime = 5;
+  AdditionalItem additional_item = 6;
+}
+
+message AdditionalItem {
+  optional Courier courier = 1;
+  optional string last_4 = 2;
+  optional string bank_name = 3;
+  optional string bank_account_number = 4;
+  optional string cheque_number = 5;
+}
+
+message PriceResponse {
+  float final_price = 1;
+  int32 points = 2;
+}
+
+message SalesRequest {
+  string startDateTime = 1;
+  string endDateTime = 2;
+}
+
+message SalesResponse {
+  repeated Sales sales = 1;
+}
+
+message Sales {
+  string datetime = 1;
+  float sales = 2;
+  int32 points = 3;
+}
+
+enum PaymentMethod {
+  AMEX = 0;
+  BANK_TRANSFER = 1;
+  CASH = 2;
+  CASH_ON_DELIVERY = 3;
+  CHEQUE = 4;
+  GRAB_PAY = 5;
+  JCB = 6;
+  LINE_PAY = 7;
+  MASTERCARD = 8;
+  PAY_PAY = 9;
+  POINTS = 10;
+  VISA = 11;
+}
+
+enum Courier {
+  YAMATO = 0;
+  SAGAWA = 1;
+}
