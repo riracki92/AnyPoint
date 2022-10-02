@@ -35,7 +35,7 @@ public class PaymentLogic {
 
     @Transactional
     public PriceResponse doPayment(PriceRequest request) {
-        Validator.validateRequest(request);
+        Validator.validatePriceRequest(request);
 
         float finalPrice = priceLogic.calculatePrice(request.getPaymentMethod(),
                 request.getPrice(), request.getPriceModifier());

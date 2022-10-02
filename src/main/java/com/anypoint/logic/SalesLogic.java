@@ -7,6 +7,8 @@ import com.anypoint.data.Payment;
 import com.anypoint.data.PaymentRepository;
 import com.anypoint.util.DateTimeFormatter;
 import java.util.List;
+
+import com.anypoint.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,7 @@ public class SalesLogic {
     }
 
     public SalesResponse getSales(SalesRequest request) {
+        Validator.validateSalesRequest(request);
         SalesResponse.Builder salesResponseBuilder = SalesResponse.newBuilder();
 
         List<Payment> payments = paymentRepository.getSales(

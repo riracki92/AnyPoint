@@ -2,6 +2,7 @@ package com.anypoint.server;
 
 import com.anypoint.*;
 import com.anypoint.logic.SalesLogic;
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.lognet.springboot.grpc.GRpcService;
@@ -22,7 +23,12 @@ public class ReportService extends ReportServiceGrpc.ReportServiceImplBase {
     public void getSales(SalesRequest request, StreamObserver<SalesResponse> responseObserver) {
         log.info("Report Service Request: " + request);
 
-        SalesResponse response = salesLogic.getSales(request);
+        SalesResponse response = null;
+        try {
+            response = salesLogic.getSales(request);
+        } catch (RuntimeException ex) {
+            responseObserver.onError(Status.INVALID_ARGUMENT.withDescription(ex.getMessage()).asRuntimeException());
+        }
 
         log.info("Report Service Response: " + response);
 
